@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
+
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -37,6 +40,7 @@ function Login() {
         sessionStorage.setItem('accessToken', accessToken);
         sessionStorage.setItem('role', role);
         sessionStorage.setItem('email',email);
+        navigate('/home');
       }
       
     } catch (error) {
@@ -71,6 +75,7 @@ function Login() {
         {error && <p className="error">{error}</p>}
         <button type="submit">Login</button>
       </form>
+      <Link to="/forget-password/email">Forgot Password?</Link>
     </div>
   );
 }
