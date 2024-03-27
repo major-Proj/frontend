@@ -59,8 +59,12 @@ function RegisterUser() {
         body: JSON.stringify({ first_name:firstName, last_name:lastName, role:role, email:email, password:password, phone_number:phoneNumber }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to register user');
+      const res = await response.json();
+
+      if (res.message != "User created successfully") {
+        alert("error in creating user");
+      } else {
+        alert("user created succussfully")
       }
 
     } catch (error) {
