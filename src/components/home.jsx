@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate,useLocation } from 'react-router-dom';
+import Addproject from './AddProject';
+import AllocateProjects from './AllocateProjects';
 
 function HomePage() {
   const [role, setRole] = useState(sessionStorage.getItem('role')); // Assume user is not an admin by default
@@ -19,7 +21,8 @@ function HomePage() {
     <div>
         <h1>Welcome to the Home Page</h1>
       <h2>Hello Admin!</h2>
-      {/* Admin-specific content */}
+      <Addproject/>
+      <AllocateProjects/>
     </div>
   )}
   {role === 'user' && (
