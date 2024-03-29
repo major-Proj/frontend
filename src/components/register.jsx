@@ -10,6 +10,11 @@ function RegisterUser() {
   const [error, setError] = useState('');
   const [userRole, setUserRole] = useState('');
 
+  const roles = [
+    "admin",
+    "engineer",
+    "consultant"
+  ]
 
   useEffect(() => {
     setUserRole(sessionStorage.getItem('role'));
@@ -61,6 +66,7 @@ function RegisterUser() {
 
       const res = await response.json();
 
+      console.log(res.message)
       if (res.message != "User created successfully") {
         alert("error in creating user");
       } else {
@@ -110,13 +116,18 @@ function RegisterUser() {
         </div>
         <div>
           <label htmlFor="role">Role:</label>
-          <input
+          <select
             type="text"
             id="role"
             value={role}
             onChange={handleRoleChange}
             required
-          />
+          >
+            <option value="">select Role:</option>
+            {roles.map(role => (
+              <option  key={role} value={role}>{role}</option>
+            ))} 
+            </select>
         </div>
         <div>
           <label htmlFor="password">Password:</label>
