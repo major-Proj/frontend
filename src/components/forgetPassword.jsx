@@ -14,7 +14,7 @@ function ForgetPasswordEmailPage() {
     event.preventDefault();
 
     try {
-        const response = await fetch('http://localhost:3000/api/generateOtp', {
+        const response = await fetch('http://localhost:5000/api/generateOtp', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

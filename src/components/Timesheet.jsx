@@ -12,7 +12,7 @@ function TimeSheetParent(){
         useEffect(() => {
             const fetchData = async () => {
                 try {
-                    const response = await fetch('http://localhost:3000/api/getTimesheetData', {
+                    const response = await fetch('http://localhost:5000/api/getTimesheetData', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ function TimeSheetParent(){
     
             const fetchUserProject = async () => {
                 try {
-                    const response = await fetch('http://localhost:3000/api/getUserProject', {
+                    const response = await fetch('http://localhost:5000/api/getUserProject', {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function TimeSheetParent(){
         const handleSubmit = async (e) => {
             console.log(Timesheetdata);
             try {
-                const response = await fetch('http://localhost:3000/api/CreateUpdateTimesheets', {
+                const response = await fetch('http://localhost:5000/api/CreateUpdateTimesheets', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -97,8 +97,16 @@ function TimeSheetParent(){
             let GrandTotal = totalMon + totalTue + totalWed + totalThur + totalFri + totalSat + totalSun;
             SetTotalHours(GrandTotal);
             return (
-                <>
-                    {Object.entries(Timesheetdata).map((t, k) => <Showtimesheet id={t[0]} data={t} seedSetter={setSeed}></Showtimesheet>)}
+                <>{Object.entries(Timesheetdata).map((t, k) => {
+                    if (t[1].visible) {
+                        return (
+                            <Showtimesheet id={t[0]} data={t} seedSetter={setSeed}></Showtimesheet>
+                        );
+                    } else {
+                        return null; // Render nothing if 'visible' is false
+                    }
+                })}
+                    
                     <tr>
                         <td>Total Hours</td>
                         <td></td>
@@ -277,6 +285,7 @@ function TimeSheetParent(){
                     fri: 0,
                     sat: 0,
                     sun: 0,
+                    visible:true,
                     created_at: new Date()
                 };
                 seedSetter(Math.random())
@@ -285,7 +294,7 @@ function TimeSheetParent(){
             const DeleteEntry = (e) => {
                 e.preventDefault()
                 var currId = e.target.id
-                delete Timesheetdata[currId];
+                Timesheetdata[currId].visible = false;
                 seedSetter(Math.random());
             }
     

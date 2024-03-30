@@ -13,7 +13,7 @@ const AllocateProjects = () => {
   useEffect(() => {
     const getUsersProjects = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/getUsersProjects', {
+        const response = await fetch('http://localhost:5000/api/getUsersProjects', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const AllocateProjects = () => {
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await fetch('http://localhost:3000/api/allocateProject', {
+      const response = await fetch('http://localhost:5000/api/allocateProject', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

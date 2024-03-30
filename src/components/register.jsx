@@ -55,7 +55,7 @@ function RegisterUser() {
         throw new Error('Only admins can register new users');
       }
 
-      const response = await fetch('http://localhost:3000/api/registerUser', {
+      const response = await fetch('http://localhost:5000/api/registerUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

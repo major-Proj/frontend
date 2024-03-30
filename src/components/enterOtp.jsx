@@ -26,7 +26,7 @@ function ForgetPasswordOTPPage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:3000/api/changePassword', {
+            const response = await fetch('http://localhost:5000/api/changePassword', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
