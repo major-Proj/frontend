@@ -187,7 +187,9 @@ function TimeSheetParent() {
             var totalSat = 0;
             var totalSun = 0;
 
+            
             for (const key in Timesheetdata) {
+                if (Timesheetdata[key]['visible']){
                 totalMon += Number(Timesheetdata[key]['mon']);
                 totalTue += Number(Timesheetdata[key]['tue']);
                 totalWed += Number(Timesheetdata[key]['wed']);
@@ -195,6 +197,7 @@ function TimeSheetParent() {
                 totalFri += Number(Timesheetdata[key]['fri']);
                 totalSat += Number(Timesheetdata[key]['sat']);
                 totalSun += Number(Timesheetdata[key]['sun']);
+                }
             };
             let GrandTotal = totalMon + totalTue + totalWed + totalThur + totalFri + totalSat + totalSun;
             SetTotalHours(GrandTotal);
