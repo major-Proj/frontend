@@ -76,7 +76,7 @@ function FeedbackModule() {
             navigate('/feedback');
 
         } catch (error) {
-            console.error('Error allocating project:', error.message)
+            console.error('Error submitting feedback:', error.message)
         }
 
         try {
@@ -95,6 +95,7 @@ function FeedbackModule() {
             });
 
         } catch (error) {
+            alert('Error updating feedback history:', error.message)
             console.error('Error fetching timesheet data:', error);
         }
 
