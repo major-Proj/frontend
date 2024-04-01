@@ -99,7 +99,7 @@ function TimeSheetParent() {
 
 
 
-        const handleSubmit = async (e) => {
+        const handleSave = async (e) => {
             console.log(Timesheetdata);
             try {
                 const response = await fetch('http://localhost:5000/api/CreateUpdateTimesheets', {
@@ -117,6 +117,59 @@ function TimeSheetParent() {
             } catch (error) {
                 console.error('Error fetching timesheet data:', error);
             }
+        }
+
+        const handleSubmit = async (e) => {
+            console.log(Timesheetdata);
+            try {
+                const response = await fetch('http://localhost:5000/api/CreateUpdateTimesheets', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
+                    },
+                    body: JSON.stringify(Timesheetdata),
+                });
+
+            } catch (error) {
+                console.error('Error fetching timesheet data:', error);
+            }
+
+            const uniquePIDs = new Set();
+
+            // Loop through the object entries and extract unique PID values
+            for (const entryKey in Timesheetdata) {
+                const entry = Timesheetdata[entryKey];
+                if (entry && entry.PID) {
+                    uniquePIDs.add(entry.PID);
+                }
+            }
+
+            // Convert set to array if needed
+            const uniquePIDsArray = Array.from(uniquePIDs);
+            console.log("uniqueid->>",uniquePIDsArray);
+
+            for(let i=0;i<uniquePIDsArray.length;i++){
+                try {
+                    const response = await fetch('http://localhost:5000/api/FeedbackHistory', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
+                        },
+                        body: JSON.stringify({
+                            PID: uniquePIDsArray[i],
+                            start_period: startDate,
+                            end_period: endDate,
+                            feedback_given: false
+                        }),
+                    });
+    
+                } catch (error) {
+                    console.error('Error fetching timesheet data:', error);
+                }
+            }
+            
         }
 
         function TimeSheetLoop(setID) {
@@ -413,7 +466,8 @@ function TimeSheetParent() {
                     <TimeSheetLoop setID={setID} />
                 </table>
                 <div >
-                    <Button onClick={handleSubmit} label="Submit" />
+                    <Button onClick={handleSave} label="save" />
+                    <Button onClick={handleSubmit} label="submit" />
                 </div>
             </div>
         )
