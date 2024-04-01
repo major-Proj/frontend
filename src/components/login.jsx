@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -27,55 +26,53 @@ function Login() {
         },
         body: JSON.stringify({ email, password }),
       });
-      
-      const res = await response.json();
-      console.log(res)
 
-      if (res.message == 'Username or password incorrect') {
-        alert('Invalid email or password');
-      }
-      else{
-        const { accessToken,role } = res;
-        console.log(accessToken,role,email);
+      const res = await response.json();
+
+      if (res.message === 'Username or password incorrect') {
+        setError('Invalid email or password');
+      } else {
+        const { accessToken, role } = res;
         sessionStorage.setItem('accessToken', accessToken);
         sessionStorage.setItem('role', role);
-        sessionStorage.setItem('email',email);
+        sessionStorage.setItem('email', email);
         navigate('/home');
       }
-      
     } catch (error) {
       setError(error.message);
     }
   };
 
   return (
-    <div className="App">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1 className="text-3xl font-bold mb-4">Login</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-4">
+        <div className="w-full max-w-xs">
+          <label htmlFor="email" className="block text-gray-700">Email:</label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={handleEmailChange}
+            className="form-input mt-1 block w-full"
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
+        <div className="w-full max-w-xs">
+          <label htmlFor="password" className="block text-gray-700">Password:</label>
           <input
             type="password"
             id="password"
             value={password}
             onChange={handlePasswordChange}
+            className="form-input mt-1 block w-full"
             required
           />
         </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
+        {error && <p className="text-red-500">{error}</p>}
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">Login</button>
       </form>
-      <Link to="/forget-password/email">Forgot Password?</Link>
+      <Link to="/forget-password/email" className="mt-2 text-blue-500">Forgot Password?</Link>
     </div>
   );
 }

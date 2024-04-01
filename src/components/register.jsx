@@ -79,84 +79,89 @@ function RegisterUser() {
   };
 
   return (
+    <div className="container mx-auto px-4 py-8">
+  {userRole === 'admin' ? ( 
     <div>
-      {userRole === 'admin' ? ( 
-        <div>
-            <h1>Register New User</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="firstName">First Name:</label>
+      <h1 className="text-2xl font-bold mb-4">Register New User</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-col">
+          <label htmlFor="firstName" className="mb-1">First Name:</label>
           <input
             type="text"
             id="firstName"
             value={firstName}
             onChange={handleFirstNameChange}
+            className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
         </div>
-        <div>
-          <label htmlFor="lastName">Last Name:</label>
+        <div className="flex flex-col">
+          <label htmlFor="lastName" className="mb-1">Last Name:</label>
           <input
             type="text"
             id="lastName"
             value={lastName}
             onChange={handleLastNameChange}
+            className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
         </div>
-        <div>
-          <label htmlFor="email">Email:</label>
+        <div className="flex flex-col">
+          <label htmlFor="email" className="mb-1">Email:</label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={handleEmailChange}
+            className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
         </div>
-        <div>
-          <label htmlFor="role">Role:</label>
+        <div className="flex flex-col">
+          <label htmlFor="role" className="mb-1">Role:</label>
           <select
-            type="text"
             id="role"
             value={role}
             onChange={handleRoleChange}
+            className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             required
           >
-            <option value="">select Role:</option>
+            <option value="">Select Role:</option>
             {roles.map(role => (
-              <option  key={role} value={role}>{role}</option>
+              <option key={role} value={role}>{role}</option>
             ))} 
-            </select>
+          </select>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+        <div className="flex flex-col">
+          <label htmlFor="password" className="mb-1">Password:</label>
           <input
             type="password"
             id="password"
             value={password}
             onChange={handlePasswordChange}
+            className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
         </div>
-        <div>
-          <label htmlFor="phoneNumber">Phone Number:</label>
+        <div className="flex flex-col">
+          <label htmlFor="phoneNumber" className="mb-1">Phone Number:</label>
           <input
             type="text"
             id="phoneNumber"
             value={phoneNumber}
             onChange={handlePhoneNumberChange}
+            className="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
         </div>
-        {error && <p>{error}</p>}
-        <button type="submit">Register</button>
+        {error && <p className="text-red-500">{error}</p>}
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Register</button>
       </form>
-        </div>
-      ) : (
-        <p>You are not permitted to register new users.</p>
-      )}
     </div>
+  ) : (
+    <p className="text-red-500">You are not permitted to register new users.</p>
+  )}
+</div>
   );
 }
 

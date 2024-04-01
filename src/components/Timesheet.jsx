@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
+import CollapsibleSidebar from "./Sidebar";
 
 function TimeSheetParent() {
 
@@ -147,9 +148,9 @@ function TimeSheetParent() {
 
             // Convert set to array if needed
             const uniquePIDsArray = Array.from(uniquePIDs);
-            console.log("uniqueid->>",uniquePIDsArray);
+            console.log("uniqueid->>", uniquePIDsArray);
 
-            for(let i=0;i<uniquePIDsArray.length;i++){
+            for (let i = 0; i < uniquePIDsArray.length; i++) {
                 try {
                     const response = await fetch('http://localhost:5000/api/FeedbackHistory', {
                         method: 'POST',
@@ -164,12 +165,12 @@ function TimeSheetParent() {
                             feedback_given: false
                         }),
                     });
-    
+
                 } catch (error) {
                     console.error('Error fetching timesheet data:', error);
                 }
             }
-            
+
         }
 
         function TimeSheetLoop(setID) {
@@ -398,88 +399,87 @@ function TimeSheetParent() {
             var total = Number(data[1].mon) + Number(data[1].tue) + Number(data[1].wed) + Number(data[1].thur) + Number(data[1].fri) + Number(data[1].sat) + Number(data[1].sun);
             return (
                 <>
-                    <tr>
-                        <td>
-                            <select value={data[1].activity} id={id} onChange={ChangeActivity}>
+                    <tr className="border-b border-gray-200">
+                        <td className="py-2">
+                            <select value={data[1].activity} id={id} onChange={ChangeActivity} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                 <option value="">Select Project Type</option>
                                 <option value="client_project">Client Project</option>
                                 <option value="sales_activity">Sales activity</option>
                                 <option value="bau">BAU activity</option>
                             </select>
                         </td>
-                        <td>
-                            <select value={data[1].PID} id={id} onChange={ChangeName}>
+                        <td className="py-2">
+                            <select value={data[1].PID} id={id} onChange={ChangeName} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                                 <option value="">Select Project</option>
-                                {
-                                    Assignedprojects.map(Assignedproject => (
-                                        <option value={Assignedproject.PID}>{Assignedproject.name}</option>
-                                    ))
-                                }
+                                {Assignedprojects.map(Assignedproject => (
+                                    <option key={Assignedproject.PID} value={Assignedproject.PID}>{Assignedproject.name}</option>
+                                ))}
                             </select>
                         </td>
-                        <td><textarea value={data[1].comment} id={id} onChange={ChangeComment} rows="2" cols="30" /></td>
-                        <td><input type="text" value={data[1].mon} id={id} onChange={ChangeMon} /></td>
-                        <td><input type="text" value={data[1].tue} id={id} onChange={ChangeTue} /></td>
-                        <td><input type="text" value={data[1].wed} id={id} onChange={ChangeWed} /></td>
-                        <td><input type="text" value={data[1].thur} id={id} onChange={ChangeThur} /></td>
-                        <td><input type="text" value={data[1].fri} id={id} onChange={ChangeFri} /></td>
-                        <td><input type="text" value={data[1].sat} id={id} onChange={ChangeSat} /></td>
-                        <td><input type="text" value={data[1].sun} id={id} onChange={ChangeSun} /></td>
-                        <td><p>{total}</p></td>
-                        <td><button onClick={CreateNewEntry}>+</button></td>
-                        {(() => {
-                            if (id !== firstID) {
-                                return (
-                                    <td><button id={id} onClick={DeleteEntry}>-</button></td>
-                                )
-                            }
-                            return null;
-                        })()}
+                        <td className="py-2">
+                            <textarea value={data[1].comment} id={id} onChange={ChangeComment} rows="2" cols="30" className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
+                        </td>
+                        <td className="py-2"><input type="text" value={data[1].mon} id={id} onChange={ChangeMon} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                        <td className="py-2"><input type="text" value={data[1].tue} id={id} onChange={ChangeTue} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                        <td className="py-2"><input type="text" value={data[1].wed} id={id} onChange={ChangeWed} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                        <td className="py-2"><input type="text" value={data[1].thur} id={id} onChange={ChangeThur} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                        <td className="py-2"><input type="text" value={data[1].fri} id={id} onChange={ChangeFri} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                        <td className="py-2"><input type="text" value={data[1].sat} id={id} onChange={ChangeSat} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                        <td className="py-2"><input type="text" value={data[1].sun} id={id} onChange={ChangeSun} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                        <td className="py-2"><p>{total}</p></td>
+                        <td className="py-2"><button onClick={CreateNewEntry} className="px-4 py-2 bg-green-500 text-white rounded-md focus:outline-none focus:bg-green-600">+</button></td>
+                        {id !== firstID && <td className="py-2"><button id={id} onClick={DeleteEntry} className="px-4 py-2 bg-red-500 text-white rounded-md focus:outline-none focus:bg-red-600">-</button></td>}
                     </tr>
-
                 </>
-            )
+            );
+
         }
 
         return (
+            <div className="p-4">
+                <h3 className="text-xl font-bold mb-2">Total Time: {TotalHours}</h3>
 
-            <div className='main'>
-
-                <h3>Total Time: {TotalHours}</h3>
-                <p className='subHeading'>Allocation Extension</p>
-                <p className='subHeading2'>TimeSheet</p>
-                <table>
-                    <tr>
-                        <th>Project Type</th>
-                        <th>Project Name</th>
-                        <th>Task Name</th>
-                        {[...Array(7)].map((_, index) => {
-                            const day = new Date(range.startPeriod);
-                            day.setDate(day.getDate() + index);
-                            const options = { weekday: 'short', month: 'short', day: 'numeric' };
-                            return <th>{day.toLocaleDateString('en-US', options)}</th>;
-                        })}
-                        <th>Total</th>
-                        <th>   </th>
-                        <th>   </th>
-                    </tr>
-                    <TimeSheetLoop setID={setID} />
+                <table className="w-full border-collapse">
+                    <thead>
+                        <tr>
+                            <th className="border px-4 py-2">Project Type</th>
+                            <th className="border px-4 py-2">Project Name</th>
+                            <th className="border px-4 py-2">Task Name</th>
+                            {[...Array(7)].map((_, index) => {
+                                const day = new Date(range.startPeriod);
+                                day.setDate(day.getDate() + index);
+                                const options = { weekday: 'short', month: 'short', day: 'numeric' };
+                                return <th className="border px-4 py-2">{day.toLocaleDateString('en-US', options)}</th>;
+                            })}
+                            <th className="border px-4 py-2">Total</th>
+                            <th className="border px-4 py-2"></th>
+                            <th className="border px-4 py-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <TimeSheetLoop setID={setID} />
+                    </tbody>
                 </table>
-                <div >
-                    <Button onClick={handleSave} label="save" />
+                <div className="mt-4">
+                    <Button onClick={handleSave} label="save" className="mr-2" />
                     <Button onClick={handleSubmit} label="submit" />
                 </div>
             </div>
-        )
+        );
+
     };
 
     return (
-        <div>
-            <h1>TimeSheet</h1>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                <button onClick={handlePreviousWeek}>{'<'}</button>
-                <span>{weekdaysval[0]} - {weekdaysval[6]}</span>
-                <button onClick={handleNextWeek}>{'>'}</button>
+        <div className="p-4 bg-gradient-to-br from-purple-500 to-blue-500 h-screen">
+            <h1 className="text-3xl font-bold text-center mb-8">TimeSheet</h1>
+            <div className="flex justify-end items-center mb-4">
+                <button onClick={handlePreviousWeek} className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 focus:outline-none">
+                    {'<'}
+                </button>
+                <span className="mr-2">{weekdaysval[0]} - {weekdaysval[6]}</span>
+                <button onClick={handleNextWeek} className="px-3 py-1 bg-blue-500 text-white rounded-md focus:outline-none">
+                    {'>'}
+                </button>
             </div>
             <TimeSheet startPeriod={startDate} endPeriod={endDate} />
         </div>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Addproject from './AddProject';
 import AllocateProjects from './AllocateProjects';
 import RegisterUser from './register';
 import TimeSheetParent from './Timesheet';
+import CollapsibleSidebar from './Sidebar';
 
 function HomePage() {
   const [role, setRole] = useState(sessionStorage.getItem('role')); // Assume user is not an admin by default
@@ -17,23 +18,25 @@ function HomePage() {
   }, []);
 
   return (
-    <div>
-  
-  {role === 'admin' && (
-    <div>
-        <h1>Welcome to the Home Page</h1>
-      <h2>Hello Admin!</h2>
-      <Addproject/>
-      <AllocateProjects/>
-      <RegisterUser/>
+
+    <div className='flex flex-1'>
+      <CollapsibleSidebar />
+
+      {role === 'admin' && (
+        <div>
+          <h1>Welcome to the Home Page</h1>
+          <h2>Hello Admin!</h2>
+          <Addproject />
+          <AllocateProjects />
+          <RegisterUser />
+        </div>
+      )}
+      {role === 'engineer' && (
+        <div>
+          <TimeSheetParent />
+        </div>
+      )}
     </div>
-  )}
-  {role === 'engineer' && (
-    <div>
-      <TimeSheetParent/>
-    </div>
-  )}
-</div>
 
   );
 }

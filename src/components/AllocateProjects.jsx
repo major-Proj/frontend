@@ -83,39 +83,39 @@ const AllocateProjects = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Allocate Projects</h2>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="projectID">Project ID:</label>
-          <select id="PID" name="PID" value={formData.projectID} onChange={handleInputChange} className="form-control" required>
-            <option value="">Select Project ID</option>
-            {data.projects.map(project => (
-              <option key={project.PID} value={project.PID}>{project.name}</option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">name:</label>
-          <select id="email" name="email" value={formData.email} onChange={handleInputChange} className="form-control" required>
-            <option value="">Select Email</option>
-            {data.users.map(user => (
-              <option key={user.email} value={user.email}>{user.name}</option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="allocationStart">Allocation Start:</label>
-          <input type="date" id="allocation_start" name="allocation_start" value={formData.allocation_start} onChange={handleInputChange} className="form-control" required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="allocationEnd">Allocation End:</label>
-          <input type="date" id="allocation_end" name="allocation_end" value={formData.allocation_end} onChange={handleInputChange} className="form-control" required />
-        </div>
-        <button type="submit" className="btn btn-primary">Allocate Project</button>
-      </form>
+    <div className="container mx-auto px-4 py-8">
+  <h2 className="text-2xl font-bold mb-4">Allocate Projects</h2>
+  {errorMessage && <p className="error-message">{errorMessage}</p>}
+  <form onSubmit={handleSubmit}>
+    <div className="mb-4">
+      <label htmlFor="projectID" className="block">Project ID:</label>
+      <select id="PID" name="PID" value={formData.projectID} onChange={handleInputChange} className="form-select" required>
+        <option value="">Select Project ID</option>
+        {data.projects.map(project => (
+          <option key={project.PID} value={project.PID}>{project.name}</option>
+        ))}
+      </select>
     </div>
+    <div className="mb-4">
+      <label htmlFor="email" className="block">Name:</label>
+      <select id="email" name="email" value={formData.email} onChange={handleInputChange} className="form-select" required>
+        <option value="">Select Email</option>
+        {data.users.map(user => (
+          <option key={user.email} value={user.email}>{user.name}</option>
+        ))}
+      </select>
+    </div>
+    <div className="mb-4">
+      <label htmlFor="allocationStart" className="block">Allocation Start:</label>
+      <input type="date" id="allocation_start" name="allocation_start" value={formData.allocation_start} onChange={handleInputChange} className="form-input" required />
+    </div>
+    <div className="mb-4">
+      <label htmlFor="allocationEnd" className="block">Allocation End:</label>
+      <input type="date" id="allocation_end" name="allocation_end" value={formData.allocation_end} onChange={handleInputChange} className="form-input" required />
+    </div>
+    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Allocate Project</button>
+  </form>
+</div>
   );
 };
 
