@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import CollapsibleSidebar from './Sidebar';
+import TopNavbar from './Navbar';
 let Questions = require('../data/feedbackQuestions.json')
 
 
@@ -101,8 +101,8 @@ function FeedbackModule() {
     };
 
     return (
-        <div className='flex flex-1'>
-        <CollapsibleSidebar/>
+        <div>
+        <TopNavbar/>
         <div className="grid grid-cols-5 mx-auto p-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg shadow-md">
            <div className='4 col-span-1'></div>
            <div className='col-span-3 bg-[rgba(255,255,255,0.1)]  p-4 rounded-lg backdrop-blur-xl shadow-xl'>

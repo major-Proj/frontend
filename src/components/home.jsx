@@ -4,7 +4,7 @@ import Addproject from './AddProject';
 import AllocateProjects from './AllocateProjects';
 import RegisterUser from './register';
 import TimeSheetParent from './Timesheet';
-import CollapsibleSidebar from './Sidebar';
+import TopNavbar from './Navbar';
 
 function HomePage() {
   const [role, setRole] = useState(sessionStorage.getItem('role')); // Assume user is not an admin by default
@@ -19,8 +19,8 @@ function HomePage() {
 
   return (
 
-    <div className='flex flex-1'>
-      <CollapsibleSidebar />
+    <div>
+      <TopNavbar />
 
       {role === 'admin' && (
         <div>

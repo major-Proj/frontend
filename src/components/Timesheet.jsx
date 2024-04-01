@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
-import CollapsibleSidebar from "./Sidebar";
+import { useNavigate } from "react-router-dom";
 
 function TimeSheetParent() {
 
     const [startDate, setStartDate] = useState(new Date('2024-01-01'));
     const [endDate, setEndDate] = useState(new Date('2024-01-07'));
+    const navigate = useNavigate();
 
     console.log("starte", startDate);
     console.log("ende", endDate);
@@ -151,8 +152,9 @@ function TimeSheetParent() {
             console.log("uniqueid->>", uniquePIDsArray);
 
             for (let i = 0; i < uniquePIDsArray.length; i++) {
+                console.log(uniquePIDsArray[i]);
                 try {
-                    const response = await fetch('http://localhost:5000/api/FeedbackHistory', {
+                    const response = fetch('http://localhost:5000/api/FeedbackHistory', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -165,11 +167,13 @@ function TimeSheetParent() {
                             feedback_given: false
                         }),
                     });
-
+                
+                
                 } catch (error) {
                     console.error('Error fetching timesheet data:', error);
                 }
             }
+            navigate('/feedback')
 
         }
 
@@ -471,7 +475,7 @@ function TimeSheetParent() {
 
     return (
         <div className="p-4 bg-gradient-to-br from-purple-500 to-blue-500 h-screen">
-            <h1 className="text-3xl font-bold text-center mb-8">TimeSheet</h1>
+            <h1 className="text-3xl font-bold text-center mb-8 text-white">TimeSheet</h1>
             <div className="flex justify-end items-center mb-4">
                 <button onClick={handlePreviousWeek} className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 focus:outline-none">
                     {'<'}

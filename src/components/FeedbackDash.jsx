@@ -1,7 +1,7 @@
 import React, { useState, useSyncExternalStore } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CollapsibleSidebar from './Sidebar';
+import TopNavbar from './Navbar';
 
 
 function FeedbackDashModule() {
@@ -39,14 +39,14 @@ function FeedbackDashModule() {
 
 
     return (
-        <div className='flex w-full'>
-        <CollapsibleSidebar/>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 row-auto gap-4 w-full  h-48">
-            <h2 className="text-5xl flex justify-center font-bold col-span-full h-min">Pending feedbacks</h2>
+        <div>
+        <TopNavbar/>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 row-auto gap-4 w-full h-48">
+            <h2 className="text-5xl flex justify-center font-bold col-span-full h-min text-white">Pending feedbacks</h2>
             {Object.values(feedbackFilled).map((entry, index) => (
-                <div key={index} className="bg-white shadow-md rounded-lg">
+                <div key={index} className="bg-white shadow-md rounded-lg ">
                     <div className="p-4">
-                        <h5 className="text-xl font-semibold mb-2">PID: {projects.find(project => project.PID === entry.PID)['name']}</h5>
+                        <h5 className="text-xl font-semibold mb-2">Project: {projects.find(project => project.PID === entry.PID)['name']}</h5>
                         <p className="text-sm text-gray-600 mb-2">
                             Start Period: {new Date(entry.start_period).toDateString()}<br />
                             End Period: {new Date(entry.end_period).toDateString()}
