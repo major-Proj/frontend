@@ -154,7 +154,7 @@ function TimeSheetParent() {
             for (let i = 0; i < uniquePIDsArray.length; i++) {
                 console.log(uniquePIDsArray[i]);
                 try {
-                    const response = fetch('http://localhost:5000/api/FeedbackHistory', {
+                    const response = await fetch('http://localhost:5000/api/FeedbackHistory', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -167,6 +167,8 @@ function TimeSheetParent() {
                             feedback_given: false
                         }),
                     });
+
+                    console.log(response);
                 
                 
                 } catch (error) {
