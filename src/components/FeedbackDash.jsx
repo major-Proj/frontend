@@ -41,11 +41,12 @@ function FeedbackDashModule() {
     return (
         <div>
         <TopNavbar/>
+        <div className='bg-gradient-to-br from-purple-500 to-blue-500 h-screen'>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 row-auto gap-4 w-full h-48">
-            <h2 className="text-5xl flex justify-center font-bold col-span-full h-min text-white">Pending feedbacks</h2>
+            <h2 className="text-5xl flex justify-center font-bold col-span-full h-min text-white mb-10">Pending feedbacks</h2>
             {Object.values(feedbackFilled).map((entry, index) => (
-                <div key={index} className="bg-white shadow-md rounded-lg ">
-                    <div className="p-4">
+                <div key={index} className="bg-white shadow-md rounded-lg ml-4">
+                    <div className="p-10">
                         <h5 className="text-xl font-semibold mb-2">Project: {projects.find(project => project.PID === entry.PID)['name']}</h5>
                         <p className="text-sm text-gray-600 mb-2">
                             Start Period: {new Date(entry.start_period).toDateString()}<br />
@@ -55,6 +56,7 @@ function FeedbackDashModule() {
                     </div>
                 </div>
             ))}
+        </div>
         </div>
         </div>
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const TopNavbar = () => {
   const navigate = useNavigate();
+  const role = sessionStorage.getItem('role')
 
   // Function to handle logout
   const handleLogout = () => {
@@ -17,15 +18,22 @@ const TopNavbar = () => {
 
   return (
     <nav className="bg-gray-900 text-white py-4 px-8 flex justify-between items-center">
-      <h1 className="text-2xl font-bold">Your Website</h1>
+      <h1 className="text-2xl font-bold">Timely</h1>
       <div className="flex items-center space-x-4">
         {/* Display other navigation links */}
-        <ul className="flex space-x-4">
+        {role === 'admin' ? (
+            <ul className="flex space-x-4">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/ViewTimeline">Timesheet</a></li>
+          </ul>
+        ) : (
+          <ul className="flex space-x-4">
           <li><a href="/home">Home</a></li>
+          <li><a href="/timesheet">Timesheet</a></li>
           <li><a href="/feedback">Feedback</a></li>
-          <li><a href="#">Services</a></li>
-          <li><a href="#">Contact</a></li>
         </ul>
+        )}
+        
         {/* Display email and logout button */}
         <div className="flex items-center space-x-4">
           <span className="text-gray-300">{userEmail}</span>

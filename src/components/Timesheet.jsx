@@ -2,16 +2,43 @@ import { useState, useEffect } from "react";
 import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import { useNavigate } from "react-router-dom";
+import TopNavbar from "./Navbar";
 
 function TimeSheetParent() {
 
-    const [startDate, setStartDate] = useState(new Date('2024-01-01'));
-    const [endDate, setEndDate] = useState(new Date('2024-01-07'));
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return (`${year}-${month}-${day}`);
+    }
+
+
     const navigate = useNavigate();
+    
+    const today = new Date();
+    console.log("today",today.toDateString())
+    const dayOfWeek = today.getDay();
 
-    console.log("starte", startDate);
-    console.log("ende", endDate);
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
+    
+    const sunday = new Date(today);
+    sunday.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? 0 : 7));
+    
+    
+    const formattedDateSunday = formatDate(sunday);
+    const formattedDateMonday = formatDate(monday);
 
+    const [startDate, setStartDate] = useState(formattedDateMonday);
+    const [endDate, setEndDate] = useState(formattedDateSunday);
+
+    const dateWithoutTime1 = new Date(new Date(endDate).getFullYear(), new Date(endDate).getMonth(), new Date(endDate).getDate());
+
+    const dateWithoutTime2 = new Date(new Date(sunday).getFullYear(), new Date(sunday).getMonth(), new Date(sunday).getDate());
+    
+
+    
     const handleNextWeek = () => {
         // Increment the start date by 7 days to get the start date of the next week
         const nextStartDate = new Date(startDate);
@@ -45,7 +72,6 @@ function TimeSheetParent() {
     };
 
     const weekdaysval = getWeekDates();
-    console.log(weekdaysval)
 
 
     function TimeSheet(range) {
@@ -123,6 +149,10 @@ function TimeSheetParent() {
 
         const handleSubmit = async (e) => {
             console.log(Timesheetdata);
+            for (const key in Timesheetdata) {
+                Timesheetdata[key].submitted = true
+            }
+
             try {
                 const response = await fetch('http://localhost:5000/api/CreateUpdateTimesheets', {
                     method: 'POST',
@@ -282,8 +312,6 @@ function TimeSheetParent() {
 
         function Showtimesheet({ id, data, seedSetter, startPeriod, endPeriod }) {
 
-            console.log("data->", data)
-
             const ChangeMon = (e) => {
                 e.preventDefault()
                 var currId = e.target.id
@@ -354,7 +382,7 @@ function TimeSheetParent() {
                 e.preventDefault()
                 var currId = e.target.id
                 var currVal = e.target.value
-                Timesheetdata[currId]['comment'] = currVal;
+                Timesheetdata[currId]['comments'] = currVal;
                 seedSetter(Math.random())
             };
 
@@ -393,6 +421,7 @@ function TimeSheetParent() {
                     sat: 0,
                     sun: 0,
                     visible: true,
+                    submitted:false,
                     created_at: new Date()
                 };
                 seedSetter(Math.random())
@@ -402,6 +431,7 @@ function TimeSheetParent() {
                 e.preventDefault()
                 var currId = e.target.id
                 Timesheetdata[currId].visible = false;
+                Timesheetdata[currId].submitted = false;
                 seedSetter(Math.random());
             }
 
@@ -426,7 +456,7 @@ function TimeSheetParent() {
                             </select>
                         </td>
                         <td className="py-2">
-                            <textarea value={data[1].comment} id={id} onChange={ChangeComment} rows="2" cols="30" className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
+                            <textarea value={data[1].comments} id={id} onChange={ChangeComment} rows="2" cols="30" className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
                         </td>
                         <td className="py-2"><input type="text" value={data[1].mon} id={id} onChange={ChangeMon} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
                         <td className="py-2"><input type="text" value={data[1].tue} id={id} onChange={ChangeTue} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
@@ -453,7 +483,7 @@ function TimeSheetParent() {
                         <tr>
                             <th className="border px-4 py-2">Project Type</th>
                             <th className="border px-4 py-2">Project Name</th>
-                            <th className="border px-4 py-2">Task Name</th>
+                            <th className="border px-4 py-2">Comments</th>
                             {[...Array(7)].map((_, index) => {
                                 const day = new Date(range.startPeriod);
                                 day.setDate(day.getDate() + index);
@@ -479,6 +509,8 @@ function TimeSheetParent() {
     };
 
     return (
+        <>
+        <TopNavbar/>
         <div className="p-4 bg-gradient-to-br from-purple-500 to-blue-500 h-screen">
             <h1 className="text-3xl font-bold text-center mb-8 text-white">TimeSheet</h1>
             <div className="flex justify-end items-center mb-4">
@@ -486,12 +518,13 @@ function TimeSheetParent() {
                     {'<'}
                 </button>
                 <span className="mr-2">{weekdaysval[0]} - {weekdaysval[6]}</span>
-                <button onClick={handleNextWeek} className="px-3 py-1 bg-blue-500 text-white rounded-md focus:outline-none">
+                <button onClick={handleNextWeek} disabled={dateWithoutTime1.toDateString() === dateWithoutTime2.toDateString()} className="px-3 py-1 bg-blue-500 text-white rounded-md focus:outline-none">
                     {'>'}
                 </button>
             </div>
             <TimeSheet startPeriod={startDate} endPeriod={endDate} />
         </div>
+        </>
     );
 }
 

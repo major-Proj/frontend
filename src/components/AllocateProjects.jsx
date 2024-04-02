@@ -89,7 +89,7 @@ const AllocateProjects = () => {
   <form onSubmit={handleSubmit}>
     <div className="mb-4">
       <label htmlFor="projectID" className="block">Project ID:</label>
-      <select id="PID" name="PID" value={formData.projectID} onChange={handleInputChange} className="form-select" required>
+      <select id="PID" name="PID" value={formData.projectID} onChange={handleInputChange} className="form-select w-full" required>
         <option value="">Select Project ID</option>
         {data.projects.map(project => (
           <option key={project.PID} value={project.PID}>{project.name}</option>
@@ -98,7 +98,7 @@ const AllocateProjects = () => {
     </div>
     <div className="mb-4">
       <label htmlFor="email" className="block">Name:</label>
-      <select id="email" name="email" value={formData.email} onChange={handleInputChange} className="form-select" required>
+      <select id="email" name="email" value={formData.email} onChange={handleInputChange} className="form-select w-full" required>
         <option value="">Select Email</option>
         {data.users.map(user => (
           <option key={user.email} value={user.email}>{user.name}</option>
@@ -107,11 +107,11 @@ const AllocateProjects = () => {
     </div>
     <div className="mb-4">
       <label htmlFor="allocationStart" className="block">Allocation Start:</label>
-      <input type="date" id="allocation_start" name="allocation_start" value={formData.allocation_start} onChange={handleInputChange} className="form-input" required />
+      <input type="date" id="allocation_start" name="allocation_start" value={formData.allocation_start} onChange={handleInputChange} className="form-input w-full" required />
     </div>
     <div className="mb-4">
       <label htmlFor="allocationEnd" className="block">Allocation End:</label>
-      <input type="date" id="allocation_end" name="allocation_end" value={formData.allocation_end} onChange={handleInputChange} className="form-input" required />
+      <input type="date" id="allocation_end" name="allocation_end" value={formData.allocation_end} onChange={handleInputChange} className="form-input w-full " required />
     </div>
     <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Allocate Project</button>
   </form>
