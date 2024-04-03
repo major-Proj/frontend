@@ -2,19 +2,20 @@ import { useState, useEffect } from "react";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import TopNavbar from "./Navbar";
 import { useLocation } from "react-router-dom";
+let Questions = require('../data/feedbackQuestions.json')
 
-function TimeSheetParentAdmin() {
+function UserDashParentAdmin() {
 
     const location = useLocation();
     const [email, setEmail] = useState(sessionStorage.getItem('email'));
-    
+
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const encodedEmail = searchParams.get('email');
         const Decodedemail = decodeURIComponent(encodedEmail);
         setEmail(Decodedemail);
-    },[location.search]);
+    }, [location.search]);
 
 
     const formatDate = (date) => {
@@ -23,18 +24,18 @@ function TimeSheetParentAdmin() {
         const day = String(date.getDate()).padStart(2, "0");
         return (`${year}-${month}-${day}`);
     }
-    
+
     const today = new Date();
-    console.log("today",today.toDateString())
+    console.log("today", today.toDateString())
     const dayOfWeek = today.getDay();
 
     const monday = new Date(today);
     monday.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
-    
+
     const sunday = new Date(today);
     sunday.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? 0 : 7));
-    
-    
+
+
     const formattedDateSunday = formatDate(sunday);
     const formattedDateMonday = formatDate(monday);
 
@@ -44,8 +45,8 @@ function TimeSheetParentAdmin() {
     const dateWithoutTime1 = new Date(new Date(endDate).getFullYear(), new Date(endDate).getMonth(), new Date(endDate).getDate());
 
     const dateWithoutTime2 = new Date(new Date(sunday).getFullYear(), new Date(sunday).getMonth(), new Date(sunday).getDate());
-    
-    
+
+
     const handleNextWeek = () => {
         // Increment the start date by 7 days to get the start date of the next week
         const nextStartDate = new Date(startDate);
@@ -80,7 +81,7 @@ function TimeSheetParentAdmin() {
 
     const weekdaysval = getWeekDates();
 
-
+    
     function TimeSheet(range) {
         var [Timesheetdata, setTimesheetdata] = useState({});
         const [TotalHours, SetTotalHours] = useState(0);
@@ -97,7 +98,7 @@ function TimeSheetParentAdmin() {
                             'Content-Type': 'application/json',
                             Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
                         },
-                        body: JSON.stringify({ email:range.email , startPeriod: range.startPeriod, endPeriod: range.endPeriod }),
+                        body: JSON.stringify({ email: range.email, startPeriod: range.startPeriod, endPeriod: range.endPeriod }),
                     });
 
                     const data = await response.json();
@@ -121,16 +122,16 @@ function TimeSheetParentAdmin() {
             var totalSat = 0;
             var totalSun = 0;
 
-            
+
             for (const key in Timesheetdata) {
-                if (Timesheetdata[key]['visible']){
-                totalMon += Number(Timesheetdata[key]['mon']);
-                totalTue += Number(Timesheetdata[key]['tue']);
-                totalWed += Number(Timesheetdata[key]['wed']);
-                totalThur += Number(Timesheetdata[key]['thur']);
-                totalFri += Number(Timesheetdata[key]['fri']);
-                totalSat += Number(Timesheetdata[key]['sat']);
-                totalSun += Number(Timesheetdata[key]['sun']);
+                if (Timesheetdata[key]['visible']) {
+                    totalMon += Number(Timesheetdata[key]['mon']);
+                    totalTue += Number(Timesheetdata[key]['tue']);
+                    totalWed += Number(Timesheetdata[key]['wed']);
+                    totalThur += Number(Timesheetdata[key]['thur']);
+                    totalFri += Number(Timesheetdata[key]['fri']);
+                    totalSat += Number(Timesheetdata[key]['sat']);
+                    totalSun += Number(Timesheetdata[key]['sun']);
                 }
             };
             let GrandTotal = totalMon + totalTue + totalWed + totalThur + totalFri + totalSat + totalSun;
@@ -220,13 +221,13 @@ function TimeSheetParentAdmin() {
                 <>
                     <tr className="border-b border-gray-200">
                         <td className="py-2">
-                        {data[1].activity}
+                            {data[1].activity}
                         </td>
                         <td className="py-2">
                             {data[1].PID}
                         </td>
                         <td className="py-2">
-                            {data[1].comments} 
+                            {data[1].comments}
                         </td>
                         <td className="py-2">{data[1].mon}</td>
                         <td className="py-2">{data[1].tue}</td>
@@ -242,55 +243,142 @@ function TimeSheetParentAdmin() {
 
         }
 
+        let submitted;
+        if (Object.values(Timesheetdata).length > 0){
+            submitted = Object.values(Timesheetdata)[0].submitted;
+        }   else {
+            submitted = false;
+        }
+        
         return (
-            <div className="p-4">
-                <h3 className="text-xl font-bold mb-2">Total Time: {TotalHours}</h3>
 
-                <table className="w-full border-collapse">
-                    <thead>
-                        <tr>
-                            <th className="border px-4 py-2">Project Type</th>
-                            <th className="border px-4 py-2">Project Name</th>
-                            <th className="border px-4 py-2">Comments</th>
-                            {[...Array(7)].map((_, index) => {
-                                const day = new Date(range.startPeriod);
-                                day.setDate(day.getDate() + index);
-                                const options = { weekday: 'short', month: 'short', day: 'numeric' };
-                                return <th className="border px-4 py-2">{day.toLocaleDateString('en-US', options)}</th>;
-                            })}
-                            <th className="border px-4 py-2">Total</th>
-                            <th className="border px-4 py-2"></th>
-                            <th className="border px-4 py-2"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <TimeSheetLoop setID={setID} />
-                    </tbody>
-                </table>
+            <div className="p-4">
+                {submitted ? (
+                    <div>
+                        <h3 className="text-xl font-bold mb-2">Total Time: {TotalHours}</h3>
+                        <table className="w-full border-collapse">
+                            <thead>
+                                <tr>
+                                    <th className="border px-4 py-2">Project Type</th>
+                                    <th className="border px-4 py-2">Project Name</th>
+                                    <th className="border px-4 py-2">Comments</th>
+                                    {[...Array(7)].map((_, index) => {
+                                        const day = new Date(range.startPeriod);
+                                        day.setDate(day.getDate() + index);
+                                        const options = { weekday: 'short', month: 'short', day: 'numeric' };
+                                        return <th className="border px-4 py-2">{day.toLocaleDateString('en-US', options)}</th>;
+                                    })}
+                                    <th className="border px-4 py-2">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <TimeSheetLoop setID={setID} />
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (<div class="flex justify-center items-center h-screen">
+                    <h2 class="text-6xl text-white">The user has not submitted for this date</h2>
+                </div>
+                )}
+
             </div>
         );
 
     };
 
+    function FeedbacksSheet (range){
+
+        const [FeedbackData,setFeedbackData] = useState([])
+
+        useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await fetch('http://localhost:5000/api/AllFeedbacks', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`
+                        },
+                        body: JSON.stringify({ email: range.email, startPeriod: range.startPeriod, endPeriod: range.endPeriod }),
+                    });
+
+                    const data = await response.json();
+                    setFeedbackData(data.payload);
+                    console.log(data);
+
+                } catch (error) {
+                    console.error('Error fetching timesheet data:', error);
+                }
+            };
+
+            fetchData();
+        }, []);
+
+        const FeedbackCard = ({ feedback }) => {
+            return (
+                <div className="bg-white bg-opacity-50 rounded-lg shadow-sm p-4 mb-4">
+                    <h2 className="text-xl font-bold mb-4">Feedback</h2>
+                    <div className="mb-2">
+                        <strong>{Questions.common.q1}</strong> {feedback.q1}
+                    </div>
+                    <div className="mb-2">
+                        <strong>{Questions.common.q2}</strong> {feedback.q2}
+                    </div>
+                    <div className="mb-2">
+                        <strong>{Questions.common.q3}</strong> {feedback.q3}
+                    </div>
+                    <div className="mb-2">
+                        <strong>{Questions.common.q4}</strong> {feedback.q4}
+                    </div>
+                    <div className="mb-2">
+                        <strong>{Questions.common.q5}</strong> {feedback.q5}
+                    </div>
+                    <div className="mb-2">
+                        <strong>{Questions[feedback.role].q6}</strong> {feedback.q6}
+                    </div>
+                    <div className="mb-2">
+                        <strong>{Questions[feedback.role].q7}</strong> {feedback.q7}
+                    </div>
+                    <div className="mb-2">
+                        <strong>{Questions[feedback.role].q8}</strong> {feedback.q8}
+                    </div>
+                    <div className="mb-2">
+                        <strong>Comments:</strong> {feedback.comments}
+                    </div>
+                </div>
+            );
+        };
+        
+          
+        return(
+            <>
+            {FeedbackData.map((feedback, index) => (
+                <FeedbackCard key={index} feedback={feedback} />
+            ))}
+        </>
+        )
+    }
+    
     return (
         <>
-        <TopNavbar/>
-        <div className="p-4 bg-gradient-to-br from-purple-500 to-blue-500 h-screen">
-            <h1 className="text-3xl font-bold text-center mb-8 text-white">TimeSheet for {email}</h1>
-            <div className="flex justify-end items-center mb-4">
-                <button onClick={handlePreviousWeek} className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 focus:outline-none">
-                    {'<'}
-                </button>
-                <span className="mr-2">{weekdaysval[0]} - {weekdaysval[6]}</span>
-                <button onClick={handleNextWeek} disabled={dateWithoutTime1.toDateString() === dateWithoutTime2.toDateString()} className="px-3 py-1 bg-blue-500 text-white rounded-md focus:outline-none">
-                    {'>'}
-                </button>
+            <TopNavbar />
+            <div className="p-4 bg-gradient-to-br from-purple-500 to-blue-500 h-screen">
+                <h1 className="text-3xl font-bold text-center mb-8 text-white">TimeSheet for {email}</h1>
+                <div className="flex justify-end items-center mb-4">
+                    <button onClick={handlePreviousWeek} className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 focus:outline-none">
+                        {'<'}
+                    </button>
+                    <span className="mr-2">{weekdaysval[0]} - {weekdaysval[6]}</span>
+                    <button onClick={handleNextWeek} disabled={dateWithoutTime1.toDateString() === dateWithoutTime2.toDateString()} className="px-3 py-1 bg-blue-500 text-white rounded-md focus:outline-none">
+                        {'>'}
+                    </button>
+                </div>
+                <TimeSheet startPeriod={startDate} endPeriod={endDate} email={email} />
+                <FeedbacksSheet startPeriod={startDate} endPeriod={endDate} email={email}/>
             </div>
-            <TimeSheet startPeriod={startDate} endPeriod={endDate} email={email}/>
-        </div>
         </>
     );
 }
 
 
-export default TimeSheetParentAdmin;
+export default UserDashParentAdmin;

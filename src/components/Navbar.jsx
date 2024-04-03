@@ -24,7 +24,7 @@ const TopNavbar = () => {
         {role === 'admin' ? (
             <ul className="flex space-x-4">
             <li><a href="/home">Home</a></li>
-            <li><a href="/ViewTimeline">Timesheet</a></li>
+            <li><a href="/ViewTimeline">User entries</a></li>
           </ul>
         ) : (
           <ul className="flex space-x-4">

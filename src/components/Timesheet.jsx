@@ -15,18 +15,18 @@ function TimeSheetParent() {
 
 
     const navigate = useNavigate();
-    
+
     const today = new Date();
-    console.log("today",today.toDateString())
+    console.log("today", today.toDateString())
     const dayOfWeek = today.getDay();
 
     const monday = new Date(today);
     monday.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
-    
+
     const sunday = new Date(today);
     sunday.setDate(today.getDate() - dayOfWeek + (dayOfWeek === 0 ? 0 : 7));
-    
-    
+
+
     const formattedDateSunday = formatDate(sunday);
     const formattedDateMonday = formatDate(monday);
 
@@ -36,9 +36,9 @@ function TimeSheetParent() {
     const dateWithoutTime1 = new Date(new Date(endDate).getFullYear(), new Date(endDate).getMonth(), new Date(endDate).getDate());
 
     const dateWithoutTime2 = new Date(new Date(sunday).getFullYear(), new Date(sunday).getMonth(), new Date(sunday).getDate());
-    
 
-    
+
+
     const handleNextWeek = () => {
         // Increment the start date by 7 days to get the start date of the next week
         const nextStartDate = new Date(startDate);
@@ -199,8 +199,8 @@ function TimeSheetParent() {
                     });
 
                     console.log(response);
-                
-                
+
+
                 } catch (error) {
                     console.error('Error fetching timesheet data:', error);
                 }
@@ -219,16 +219,16 @@ function TimeSheetParent() {
             var totalSat = 0;
             var totalSun = 0;
 
-            
+
             for (const key in Timesheetdata) {
-                if (Timesheetdata[key]['visible']){
-                totalMon += Number(Timesheetdata[key]['mon']);
-                totalTue += Number(Timesheetdata[key]['tue']);
-                totalWed += Number(Timesheetdata[key]['wed']);
-                totalThur += Number(Timesheetdata[key]['thur']);
-                totalFri += Number(Timesheetdata[key]['fri']);
-                totalSat += Number(Timesheetdata[key]['sat']);
-                totalSun += Number(Timesheetdata[key]['sun']);
+                if (Timesheetdata[key]['visible']) {
+                    totalMon += Number(Timesheetdata[key]['mon']);
+                    totalTue += Number(Timesheetdata[key]['tue']);
+                    totalWed += Number(Timesheetdata[key]['wed']);
+                    totalThur += Number(Timesheetdata[key]['thur']);
+                    totalFri += Number(Timesheetdata[key]['fri']);
+                    totalSat += Number(Timesheetdata[key]['sat']);
+                    totalSun += Number(Timesheetdata[key]['sun']);
                 }
             };
             let GrandTotal = totalMon + totalTue + totalWed + totalThur + totalFri + totalSat + totalSun;
@@ -421,7 +421,7 @@ function TimeSheetParent() {
                     sat: 0,
                     sun: 0,
                     visible: true,
-                    submitted:false,
+                    submitted: false,
                     created_at: new Date()
                 };
                 seedSetter(Math.random())
@@ -437,50 +437,48 @@ function TimeSheetParent() {
 
             var total = Number(data[1].mon) + Number(data[1].tue) + Number(data[1].wed) + Number(data[1].thur) + Number(data[1].fri) + Number(data[1].sat) + Number(data[1].sun);
             return (
-                <>
-                    <tr className="border-b border-gray-200">
-                        <td className="py-2">
-                            <select value={data[1].activity} id={id} onChange={ChangeActivity} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <option value="">Select Project Type</option>
-                                <option value="client_project">Client Project</option>
-                                <option value="sales_activity">Sales activity</option>
-                                <option value="bau">BAU activity</option>
-                            </select>
-                        </td>
-                        <td className="py-2">
-                            <select value={data[1].PID} id={id} onChange={ChangeName} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                <option value="">Select Project</option>
-                                {Assignedprojects.map(Assignedproject => (
-                                    <option key={Assignedproject.PID} value={Assignedproject.PID}>{Assignedproject.name}</option>
-                                ))}
-                            </select>
-                        </td>
-                        <td className="py-2">
-                            <textarea value={data[1].comments} id={id} onChange={ChangeComment} rows="2" cols="30" className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
-                        </td>
-                        <td className="py-2"><input type="text" value={data[1].mon} id={id} onChange={ChangeMon} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
-                        <td className="py-2"><input type="text" value={data[1].tue} id={id} onChange={ChangeTue} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
-                        <td className="py-2"><input type="text" value={data[1].wed} id={id} onChange={ChangeWed} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
-                        <td className="py-2"><input type="text" value={data[1].thur} id={id} onChange={ChangeThur} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
-                        <td className="py-2"><input type="text" value={data[1].fri} id={id} onChange={ChangeFri} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
-                        <td className="py-2"><input type="text" value={data[1].sat} id={id} onChange={ChangeSat} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
-                        <td className="py-2"><input type="text" value={data[1].sun} id={id} onChange={ChangeSun} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
-                        <td className="py-2"><p>{total}</p></td>
-                        <td className="py-2"><button onClick={CreateNewEntry} className="px-4 py-2 bg-green-500 text-white rounded-md focus:outline-none focus:bg-green-600">+</button></td>
-                        {id !== firstID && <td className="py-2"><button id={id} onClick={DeleteEntry} className="px-4 py-2 bg-red-500 text-white rounded-md focus:outline-none focus:bg-red-600">-</button></td>}
-                    </tr>
-                </>
+                <tr className="border-b border-gray-200">
+                    <td className="py-2">
+                        <select value={data[1].activity} id={id} onChange={ChangeActivity} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <option value="">Select Project Type</option>
+                            <option value="client_project">Client Project</option>
+                            <option value="sales_activity">Sales activity</option>
+                            <option value="bau">BAU activity</option>
+                        </select>
+                    </td>
+                    <td className="py-2">
+                        <select value={data[1].PID} id={id} onChange={ChangeName} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                            <option value="">Select Project</option>
+                            {Assignedprojects.map(Assignedproject => (
+                                <option key={Assignedproject.PID} value={Assignedproject.PID}>{Assignedproject.name}</option>
+                            ))}
+                        </select>
+                    </td>
+                    <td className="py-2">
+                        <textarea value={data[1].comments} id={id} onChange={ChangeComment} rows="2" cols="30" className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
+                    </td>
+                    <td className="py-2"><input type="text" value={data[1].mon} id={id} onChange={ChangeMon} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                    <td className="py-2"><input type="text" value={data[1].tue} id={id} onChange={ChangeTue} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                    <td className="py-2"><input type="text" value={data[1].wed} id={id} onChange={ChangeWed} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                    <td className="py-2"><input type="text" value={data[1].thur} id={id} onChange={ChangeThur} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                    <td className="py-2"><input type="text" value={data[1].fri} id={id} onChange={ChangeFri} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                    <td className="py-2"><input type="text" value={data[1].sat} id={id} onChange={ChangeSat} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                    <td className="py-2"><input type="text" value={data[1].sun} id={id} onChange={ChangeSun} className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" /></td>
+                    <td className="py-2"><p>{total}</p></td>
+                    <td className="py-2"><button onClick={CreateNewEntry} className="px-4 py-2 bg-green-500 text-white rounded-md focus:outline-none focus:bg-green-600">+</button></td>
+                    {id !== firstID && <td className="py-2"><button id={id} onClick={DeleteEntry} className="px-4 py-2 bg-red-500 text-white rounded-md focus:outline-none focus:bg-red-600">-</button></td>}
+                </tr>
+
             );
 
         }
-
+        
         return (
-            <div className="p-4">
-                <h3 className="text-xl font-bold mb-2">Total Time: {TotalHours}</h3>
-
-                <table className="w-full border-collapse">
+            <div className="p-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg shadow-md">
+                    <h3 className="text-2xl font-bold mb-4 text-white px-6 py-4 rounded-lg">Total Time: {TotalHours}</h3>
+                    <table className="w-full border-collapse bg-transparent backdrop-blur-lg rounded-lg shadow-md border-none">
                     <thead>
-                        <tr>
+                        <tr className="bg-transparent">
                             <th className="border px-4 py-2">Project Type</th>
                             <th className="border px-4 py-2">Project Name</th>
                             <th className="border px-4 py-2">Comments</th>
@@ -499,31 +497,34 @@ function TimeSheetParent() {
                         <TimeSheetLoop setID={setID} />
                     </tbody>
                 </table>
-                <div className="mt-4">
-                    <Button onClick={handleSave} label="save" className="mr-2" />
-                    <Button onClick={handleSubmit} label="submit" />
-                </div>
+                <div className="mt-6 flex justify-end">
+                        <Button onClick={handleSave} label="Save" className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4" />
+                        <Button onClick={handleSubmit} label="Submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" />
+                    </div>
             </div>
+
+
+
         );
 
     };
 
     return (
         <>
-        <TopNavbar/>
-        <div className="p-4 bg-gradient-to-br from-purple-500 to-blue-500 h-screen">
-            <h1 className="text-3xl font-bold text-center mb-8 text-white">TimeSheet</h1>
-            <div className="flex justify-end items-center mb-4">
-                <button onClick={handlePreviousWeek} className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 focus:outline-none">
-                    {'<'}
-                </button>
-                <span className="mr-2">{weekdaysval[0]} - {weekdaysval[6]}</span>
-                <button onClick={handleNextWeek} disabled={dateWithoutTime1.toDateString() === dateWithoutTime2.toDateString()} className="px-3 py-1 bg-blue-500 text-white rounded-md focus:outline-none">
-                    {'>'}
-                </button>
+            <TopNavbar />
+            <div className="p-4 bg-gradient-to-br from-purple-500 to-blue-500 h-screen">
+                <h1 className="text-3xl font-bold text-center mb-8 text-white">TimeSheet</h1>
+                <div className="flex justify-end items-center mb-4">
+                    <button onClick={handlePreviousWeek} className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 focus:outline-none">
+                        {'<'}
+                    </button>
+                    <span className="mr-2">{weekdaysval[0]} - {weekdaysval[6]}</span>
+                    <button onClick={handleNextWeek} disabled={dateWithoutTime1.toDateString() === dateWithoutTime2.toDateString()} className="px-3 py-1 bg-blue-500 text-white rounded-md focus:outline-none">
+                        {'>'}
+                    </button>
+                </div>
+                <TimeSheet startPeriod={startDate} endPeriod={endDate} />
             </div>
-            <TimeSheet startPeriod={startDate} endPeriod={endDate} />
-        </div>
         </>
     );
 }

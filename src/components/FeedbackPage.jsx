@@ -4,12 +4,33 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import TopNavbar from './Navbar';
 let Questions = require('../data/feedbackQuestions.json')
 
+function StarRating({ id, value, onChange }) {
+    const [rating, setRating] = useState(value);
+
+    const handleClick = (newValue) => {
+        setRating(newValue);
+        onChange({ target: { name: id, value: newValue } });
+    };
+
+    return (
+        <div>
+            {[1, 2, 3, 4, 5].map((index) => (
+                <span
+                    key={index}
+                    className={index <= rating ? "text-yellow-400 cursor-pointer" : "text-gray-400 cursor-pointer"}
+                    onClick={() => handleClick(index)}
+                >
+                    ★
+                </span>
+            ))}
+        </div>
+    );
+}
 
 function FeedbackModule() {
     const [accessToken, setToken] = useState(sessionStorage.getItem('accessToken'));
     const [role, setRole] = useState(sessionStorage.getItem('role')); // Assume user is not an admin by default
     const location = useLocation();
-
     const navigate = useNavigate();
     const searchParams = new URLSearchParams(location.search);
     const PID = searchParams.get('pid');
@@ -23,8 +44,6 @@ function FeedbackModule() {
         if (!accessToken) {
             navigate('/login');
         }
-
-        console.log(decodedPID, decodedStart, decodedEnd)
     }, [location.search]);
 
     const [formData, setFormData] = useState({
@@ -66,11 +85,11 @@ function FeedbackModule() {
             });
 
             const res = await response.json()
-            if (res.message != "Feedback data saved") {
+            if (res.message !== "Feedback data saved") {
                 alert('Failed to save data');
             }
             else {
-                alert('feedback given succussfully')
+                alert('Feedback given successfully')
             }
 
             navigate('/feedback');
@@ -88,8 +107,8 @@ function FeedbackModule() {
                 },
                 body: JSON.stringify({
                     PID: PID,
-                    start_period: start_period,
-                    end_period: end_period,
+                    start_period: decodedStart,
+                    end_period: decodedEnd,
                     feedback_given: true
                 }),
             });
@@ -98,59 +117,37 @@ function FeedbackModule() {
             alert('Error updating feedback history:', error.message)
             console.error('Error fetching timesheet data:', error);
         }
-
     };
 
     return (
         <div>
-        <TopNavbar/>
-        <div className="grid grid-cols-5 mx-auto p-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg shadow-md">
-           <div className='4 col-span-1'></div>
-           <div className='col-span-3 bg-[rgba(255,255,255,0.1)]  p-4 rounded-lg backdrop-blur-xl shadow-xl'>
-            <h2 className="text-3xl font-bold mb-6 text-white">Feedback Form</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">  
-                    <label htmlFor="q1" className="block font-bold">{Questions.common.q1}</label>
-                    <input type="number" id="q1" name="q1" value={formData.q1} onChange={handleInputChange} min="1" max="5" className="form-input" required />
+            <TopNavbar />
+            <div className="grid grid-cols-5 mx-auto p-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg shadow-md">
+                <div className='4 col-span-1'></div>
+                <div className='col-span-3 bg-[rgba(255,255,255,0.1)] p-4 rounded-lg backdrop-blur-xl shadow-xl'>
+                    <h2 className="text-3xl font-bold mb-6 text-white">Feedback Form</h2>
+                    <form onSubmit={handleSubmit}>
+                        {Object.keys(Questions.common).map((key) => (
+                            <div key={key} className="mb-4">
+                                <label htmlFor={key} className="block font-bold text-white">{Questions.common[key]}</label>
+                                <StarRating id={key} name={key} value={formData[key]} onChange={handleInputChange} />
+                            </div>
+                        ))}
+                        {role && Object.keys(Questions[role]).map((key) => (
+                            <div key={key} className="mb-4">
+                                <label htmlFor={key} className="block font-bold text-white">{Questions[role][key]}</label>
+                                <StarRating id={key} name={key} value={formData[key]} onChange={handleInputChange} />
+                            </div>
+                        ))}
+                        <div className="mb-4">
+                            <label htmlFor="comments" className="block font-bold text-white">Comments:</label>
+                            <textarea id="comments" name="comments" value={formData.comments} onChange={handleInputChange} className="form-textarea" required />
+                        </div>
+                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
+                    </form>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="q2" className="block font-bold">{Questions.common.q2}</label>
-                    <input type="number" id="q2" name="q2" value={formData.q2} onChange={handleInputChange} min="1" max="5" className="form-input" required />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="q3" className="block font-bold">{Questions.common.q3}</label>
-                    <input type="number" id="q3" name="q3" value={formData.q3} onChange={handleInputChange} min="1" max="5" className="form-input" required />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="q4" className="block font-bold">{Questions.common.q4}</label>
-                    <input type="number" id="q4" name="q4" value={formData.q4} onChange={handleInputChange} min="1" max="5" className="form-input" required />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="q5" className="block font-bold">{Questions.common.q5}</label>
-                    <input type="number" id="q5" name="q5" value={formData.q5} onChange={handleInputChange} min="1" max="5" className="form-input" required />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="q6" className="block font-bold">{Questions[role].q6}</label>
-                    <input type="number" id="q6" name="q6" value={formData.q6} onChange={handleInputChange} min="1" max="5" className="form-input" required />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="q7" className="block font-bold">{Questions[role].q7}</label>
-                    <input type="number" id="q7" name="q7" value={formData.q7} onChange={handleInputChange} min="1" max="5" className="form-input" required />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="q8" className="block font-bold">{Questions[role].q8}</label>
-                    <input type="number" id="q8" name="q8" value={formData.q8} onChange={handleInputChange} min="1" max="5" className="form-input" required />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="comments" className="block font-bold">Comments:</label>
-                    <textarea id="comments" name="comments" value={formData.comments} onChange={handleInputChange} className="form-textarea" required />
-                </div>
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
-            </form>
-            </div> 
+            </div>
         </div>
-        </div>
-
     );
 }
 

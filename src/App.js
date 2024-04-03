@@ -9,7 +9,7 @@ import FeedbackModule from './components/FeedbackPage';
 import FeedbackDashModule from './components/FeedbackDash';
 import TimeSheetParent from './components/Timesheet';
 import GetUsersForTimeline from './components/AdminViewUsers';
-import TimeSheetParentAdmin from './components/AdminViewTimesheet';
+import UserDashParentAdmin from './components/AdminView';
 
 function App() {
  
@@ -26,7 +26,7 @@ function App() {
         <Route path="/feedback" element={<FeedbackDashModule/>}/>
         <Route path="/home" element={<HomePage/>}/>
         <Route path='/ViewTimeline' element={<GetUsersForTimeline/>}/>
-        <Route path='/TimesheetUser' element={<TimeSheetParentAdmin/>}/>
+        <Route path='/UserTimeFeedback' element={<UserDashParentAdmin/>}/>
         </Routes>
       </Router>
     </>

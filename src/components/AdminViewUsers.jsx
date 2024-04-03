@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import TopNavbar from './Navbar';
 
 const GetUsersForTimeline = () => {
     const [users, setUsers] = useState([]);
@@ -34,6 +34,7 @@ const GetUsersForTimeline = () => {
     console.log(users);
     return (
         <div>
+            <TopNavbar/>
         {role === 'admin' ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {users.map((user, index) => (
@@ -41,8 +42,7 @@ const GetUsersForTimeline = () => {
                 <h2 className="text-xl font-semibold">{user.name}</h2>
                 <p className="text-gray-600">{user.email}</p>
                 <div className="mt-4 flex justify-between">
-                  <a href={`/TimesheetUser?email=${encodeURIComponent(user.email)}`}> <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Timesheet</button></a>
-                  <button className="bg-green-500 text-white px-4 py-2 rounded-md">Feedbacks</button>
+                  <a href={`/UserTimeFeedback?email=${encodeURIComponent(user.email)}`}> <button className="bg-blue-500 text-white px-4 py-2 rounded-md">view timesheet/feedback</button></a>
                 </div>
               </div>
             ))}
