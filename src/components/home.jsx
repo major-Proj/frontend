@@ -29,7 +29,7 @@ function HomePage() {
           <RegisterUser />
         </div>
       )}
-      {role === 'engineer'||'consultant' && (
+      {role === 'engineer' || role === 'consultant' && (
         <div>
           <TopNavbar/>
           <Dashboard/>

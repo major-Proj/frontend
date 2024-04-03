@@ -77,7 +77,7 @@ function FeedbackModule() {
                     Authorization: `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
-                    PID: PID,
+                    PID: decodedPID,
                     start_period: start_period,
                     end_period: end_period,
                     feedback: formData
