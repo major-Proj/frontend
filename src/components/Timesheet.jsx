@@ -79,6 +79,7 @@ function TimeSheetParent() {
         var [Assignedprojects, SetAssignedprojects] = useState([]);
         const [TotalHours, SetTotalHours] = useState(0);
         const firstID = Object.keys(Timesheetdata)[0];
+        const [IsSubmitted, SetIsSubmitted] = useState(false)
 
         const [ID, setID] = useState(0);
 
@@ -95,7 +96,8 @@ function TimeSheetParent() {
                     });
 
                     const data = await response.json();
-                    console.log(data);
+                    console.log(Object.values(data.payload)[0]);
+                    SetIsSubmitted(Object.values(data.payload)[0].submitted)
                     setTimesheetdata(data.payload)
                 } catch (error) {
                     console.error('Error fetching timesheet data:', error);
@@ -472,11 +474,11 @@ function TimeSheetParent() {
             );
 
         }
-        
+
         return (
             <div className="p-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg shadow-md">
-                    <h3 className="text-2xl font-bold mb-4 text-white px-6 py-4 rounded-lg">Total Time: {TotalHours}</h3>
-                    <table className="w-full border-collapse bg-transparent backdrop-blur-lg rounded-lg shadow-md border-none">
+                <h3 className="text-2xl font-bold mb-4 text-white px-6 py-4 rounded-lg">Total Time: {TotalHours}</h3>
+                <table className="w-full border-collapse bg-transparent backdrop-blur-lg rounded-lg shadow-md border-none">
                     <thead>
                         <tr className="bg-transparent">
                             <th className="border px-4 py-2">Project Type</th>
@@ -498,9 +500,13 @@ function TimeSheetParent() {
                     </tbody>
                 </table>
                 <div className="mt-6 flex justify-end">
-                        <Button onClick={handleSave} label="Save" className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4" />
-                        <Button onClick={handleSubmit} label="Submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" />
+                    <div>
+                        <Button onClick={handleSave} disabled={IsSubmitted} label="Save" className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4" />
+                        <Button onClick={handleSubmit} disabled={IsSubmitted} label="Submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" />
+                        {IsSubmitted && <p className="text-red-500">Already submitted</p>}
                     </div>
+
+                </div>
             </div>
 
 
