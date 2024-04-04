@@ -21,15 +21,15 @@ function HomePage() {
 
     <div>
 
-      {role === 'admin' && (
+      {role === 'admin'?(
         <div className='bg-gradient-to-br from-purple-500 to-blue-500 h-full'>
           <TopNavbar/>
           <Addproject />
           <AllocateProjects />
           <RegisterUser />
         </div>
-      )}
-      {role === 'engineer' || role === 'consultant' && (
+      ):
+      (
         <div>
           <TopNavbar/>
           <Dashboard/>

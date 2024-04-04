@@ -4,7 +4,6 @@ import { useNavigate,useLocation } from 'react-router-dom';
 function ForgetPasswordEmailPage() {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);

@@ -33,7 +33,7 @@ const GetUsersForTimeline = () => {
 
     console.log(users);
     return (
-        <div>
+        <div className='bg-gradient-to-br from-purple-500 to-blue-500 h-screen'>
             <TopNavbar/>
         {role === 'admin' ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
